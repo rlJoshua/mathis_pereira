@@ -20,6 +20,9 @@ Le site a été réalisé avec les outils & technologies suivantes :
 - Lancer la commande  
     `composer install`
 - Créer un base de donnée au nom de **mat_db**
+- Lancer le serveur laravel, il sera lancé au **localhost:8000**  
+    `php artisan serve`
+    
     
 ### Gestion GIT
 Voici quelque règles pour la gestion du GIT pour les développeurs.
