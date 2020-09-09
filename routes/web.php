@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 // HOME
 Route::get('/', 'HomeController@home')->name('home');
+
+// PROFIL
 Route::get('/profil', 'UserController@profil')->name('profil');
+Route::post('/profil', 'UserController@edit')->name('profil-post');
+
+// PASSWORD
+Route::get('/password', 'UserController@password')->name('password');
+Route::post('/password', 'UserController@editPassword')->name('password-post');
 
 // AUTH
 Auth::routes();
