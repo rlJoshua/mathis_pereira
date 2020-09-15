@@ -3,10 +3,18 @@
     <div class="content">
         <header>
             <h2>My Work</h2>
-            <p>Lorem ipsum dolor sit amet et sapien sed elementum egestas dolore condimentum.
+            <p>
+                Lorem ipsum dolor sit amet et sapien sed elementum egestas dolore condimentum.
                 Fusce blandit ultrices sapien, in accumsan orci rhoncus eu. Sed sodales venenatis
-                arcu, id varius justo euismod in. Curabitur egestas consectetur magna vitae.</p>
+                arcu, id varius justo euismod in. Curabitur egestas consectetur magna vitae.
+            </p>
         </header>
+
+        @auth
+            <ul class="actions special">
+                <li><a class="button" href="{{ route('add-work') }}">{{ __('Ajouter') }}</a></li>
+            </ul>
+        @endauth
 
         <!-- Gallery  -->
         <div class="gallery">
@@ -29,6 +37,5 @@
                 <a href="images/fulls/06.jpg" class="image fit"><img src="images/thumbs/06.jpg" title="Bent IX" alt="" /></a>
             </article>
         </div>
-
     </div>
 </section>

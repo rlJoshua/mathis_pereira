@@ -23,5 +23,9 @@ Route::post('/profil', 'UserController@edit')->name('profil-post');
 Route::get('/password', 'UserController@password')->name('password');
 Route::post('/password', 'UserController@editPassword')->name('password-post');
 
+// WORK
+Route::get('/work','WorkController@add')->name('add-work');
+Route::post('/add-work','WorkController@addWork')->name('add-work-post');
+
 // AUTH
 Auth::routes();
