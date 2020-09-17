@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,18 +31,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function edit(Request $request)
+    public function edit(UserRequest $request)
     {
         // Get form and add rules
-        $validator = $this->validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'email' => 'required|email'
-        ],
-        [
-            'required' => 'Ce champ est requis',
-            'max' => 'Ce champ est trop long',
-            'email' => 'L’adresse e-mail n’est pas valide'
-        ]);
+        $validator = $this->validator::make(
+            $request->all(),
+            $request->rules(),
+            $request->messages()
+        );
 
         // Check if form is valid
         if ($validator->fails()) {
@@ -65,18 +61,14 @@ class UserController extends Controller
         return view('user.password');
     }
 
-    public function editPassword(Request $request)
+    public function editPassword(UserRequest $request)
     {
         // Get form and add rules
-        $validator = $this->validator::make($request->all(), [
-            'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required'
-        ],
-        [
-            'required' => 'Ce champ est requis',
-            'min' => 'Ce champ est trop court',
-            'confirmed' => 'Les mot de passe ne sont pas identique'
-        ]);
+        $validator = $this->validator::make(
+            $request->all(),
+            $request->rules(),
+            $request->messages()
+        );
 
         // Check if form is valid
         if ($validator->fails()) {

@@ -24,18 +24,16 @@
                         </div>
                         <div class="field half">
                             <select name="month">
-                                <option value="01" selected>{{ __('Janvier') }}</option>
-                                <option value="02">{{ __('Février') }}</option>
-                                <option value="03">{{ __('Mars') }}</option>
-                                <option value="04">{{ __('Avril') }}</option>
-                                <option value="05">{{ __('Mai') }}</option>
-                                <option value="06">{{ __('Juin') }}</option>
-                                <option value="07">{{ __('Juillet') }}</option>
-                                <option value="08">{{ __('Août') }}</option>
-                                <option value="09">{{ __('Septembre') }}</option>
-                                <option value="10">{{ __('Octobre') }}</option>
-                                <option value="11">{{ __('Novembre') }}</option>
-                                <option value="12">{{ __('Décembre') }}</option>
+                                @foreach($months as $key => $month)
+                                    @if ($key === old('month'))
+                                        <option selected value="{{ $key }}">{{ $month }}</option>
+                                    @endif
+                                    @if($loop->first && !old('month'))
+                                        <option selected value="{{ $key }}">{{ $month }}</option>
+                                    @else
+                                        <option value="{{ $key }}">{{ $month }}</option>
+                                    @endif
+                                @endforeach
                             </select>
                             @error('month')
                                 <div class="alert alert-danger">{{ $message }}</div>
@@ -43,11 +41,14 @@
                         </div>
                         <div class="field half">
                             <select name="year">
-                                @foreach($years as $key => $year)
-                                    @if($loop->first)
-                                        <option selected value="{{ $key }}">{{ $year }}</option>
+                                @foreach($years as $year)
+                                    @if ($year === old('year'))
+                                        <option selected value="{{ $year }}">{{ $year }}</option>
+                                    @endif
+                                    @if($loop->first && !old('year'))
+                                        <option selected value="{{ $year }}">{{ $year }}</option>
                                     @else
-                                        <option value="{{ $key }}">{{ $year }}</option>
+                                        <option value="{{ $year }}">{{ $year }}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -56,7 +57,7 @@
                             @enderror
                         </div>
                         <div class="field">
-                            <input type="text" name="post" value="{{ old('post') }}" placeholder="{{ __('Post') }}" />
+                            <input type="text" name="post" value="{{ old('post') }}" placeholder="{{ __('Post occupé') }}" />
                             @error('post')
                                 <div class="alert alert-danger">{{ $message }}</div>
                             @enderror

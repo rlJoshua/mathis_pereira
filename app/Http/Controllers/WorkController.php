@@ -2,43 +2,80 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
-use Illuminate\Http\Request;
+use App\Http\Requests\WorkRequest;
+use App\Services\WorkService;
+use App\Traits\PeriodTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class WorkController extends Controller
 {
-    protected $userService;
+    protected $workService;
 
     protected $validator;
 
-    public function __construct(UserService $userService, Validator $validator)
+    protected $period;
+
+    public function __construct(WorkService $workService, Validator $validator, PeriodTrait $period)
     {
-        $this->middleware('auth');
-        $this->userService = $userService;
+        $this->workService = $workService;
         $this->validator = $validator;
+        $this->period = $period;
     }
 
     public function add()
     {
-        // Get all years after 2013
-        $years = [];
-        $first = new \DateTime('2012-09-01');
-        $interval = date_interval_create_from_date_string('1 years');
+        $this->middleware('auth');
 
-        for ($now = new \DateTime(); $now->diff($first)->y > 0;) {
-            $first->add($interval);
-            array_push($years, $first->format('Y'));
-        }
+        $years = $this->period->years();
+        $months = $this->period->months();
 
-        // Sort years descending
-        $years = collect($years)->sortDesc();
-
-        return view('work.add', ['years' => $years]);
+        return view('work.add', [
+            'months' => $months,
+            'years' => $years
+        ]);
     }
 
-    public function addWork()
+    public function addPost(WorkRequest $request)
     {
+        $this->middleware('auth');
 
+        // Get form and add rules
+        $validator = $this->validator::make(
+            $request->all(),
+            $request->rules(),
+            $request->messages()
+        );
+
+        // Check if form is valid
+        if ($validator->fails()) {
+            return redirect('work')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Add data in database
+        $date = new \DateTime($request->get('year').'/'.$request->get('month').'/01');
+
+        $data = [
+            'title' => $request->get('title'),
+            'description' => $request->get('description'),
+            'date' => $date,
+            'post' => $request->get('post'),
+            'user_id' => Auth::id()
+        ];
+
+        $this->workService->add($data);
+
+        return redirect()->route('home');
+    }
+
+    public function show(int $id)
+    {
+        $work = $this->workService->get($id);
+
+        return view('work.show', [
+            'work' => $work
+        ]);
     }
 }

@@ -893,7 +893,8 @@ input, select, textarea {
 	}
 
 	textarea {
-		min-height: 8em;
+		min-height: 15em;
+        resize: vertical;
 	}
 
 	::-moz-focus-inner {
@@ -2312,3 +2313,14 @@ input, select, textarea {
 			}
 
 		}
+
+/* Work */
+    #work .description {
+        padding: 2.5em 1em 1em 1em;
+        text-align: left;
+    }
+
+    #work h4 {
+        text-align: left;
+        padding: 1em;
+    }
